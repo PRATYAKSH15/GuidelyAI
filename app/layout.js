@@ -23,7 +23,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider appearance={{
-      baseTheme: "dark",
+      baseTheme: "light",
     }}>
     <html lang="en" suppressHydrationWarning>
       <body
@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
           {/*footer*/}
           <footer className = "bg-muted/50 py-12">
             <div className="container mx-auto px-4 text-center text-grey-200">
-              <p>Made with 💗 by Pratyaksh</p>
+              <p>Developed with 💗 by Pratyaksh</p>
             </div>
           </footer>
         </ThemeProvider>
