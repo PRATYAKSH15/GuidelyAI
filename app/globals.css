@@ -120,3 +120,31 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* In your globals.css or equivalent */
+.gradient-title {
+  background: linear-gradient(
+    to right,
+    #8e2de2, /* A nice purple */
+    #4a00e0, /* A deep violet */
+    #ff5e62  /* A vibrant coral */
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  animation: gradient-animation 10s ease infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
