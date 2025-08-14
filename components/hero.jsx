@@ -47,9 +47,12 @@ const HeroSection = () => {
           className="text-5xl font-bold md:text-6xl lg:text-7xl xl:text-8xl gradient-title"
           variants={itemVariants}
         >
-          Your AI Career Coach for
+          {/* Your AI Career Coach for
           <br />
-          Professional Success
+          Professional Success */}
+          Transform Your Career with
+          <br />
+          Your Personal AI Guide
         </motion.h1>
 
         <motion.p
