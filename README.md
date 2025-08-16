@@ -1,6 +1,6 @@
 # GuidelyAI
 
-![GuidelyAI Banner](SS1.png) An intelligent career guidance companion built to help users navigate their professional journey. This application leverages the power of Google's Gemini API to provide personalized advice, insights, and support.
+An intelligent career guidance companion built to help users navigate their professional journey. This application leverages the power of Google's Gemini API to provide personalized advice, insights, and support.
 
 ## About The Project
 
@@ -44,7 +44,7 @@ Make sure you have the following installed on your system:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/GuidelyAI.git](https://github.com/your-username/GuidelyAI.git)
+    git clone [https://github.com/PRATYAKSH15/GuidelyAI.git](https://github.com/PRATYAKSH15/GuidelyAI.git)
     ```
 2.  **Navigate to the project directory:**
     ```bash
@@ -63,8 +63,18 @@ Make sure you have the following installed on your system:
 4.  **Set up your environment variables:**
     Create a `.env.local` file in the root of the project and add your database connection string and Gemini API key.
     ```env
-    DATABASE_URL="your_postgresql_connection_string"
-    GEMINI_API_KEY="your_gemini_api_key"
+
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY= ****
+    CLERK_SECRET_KEY= ****
+
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+    NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard  
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard  
+
+    DATABASE_URL=postgresql******
+    GEMINI_API_KEY= ****
+    
     ```
 5.  **Run the development server:**
     ```bash
@@ -103,7 +113,3 @@ If you have a suggestion that would make this better, please fork the repo and c
 3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4.  Push to the Branch (`git push origin feature/AmazingFeature`)
 5.  Open a Pull Request
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
