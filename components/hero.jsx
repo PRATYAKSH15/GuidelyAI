@@ -72,13 +72,10 @@ const HeroSection = () => {
               Get Started
             </Button>
           </Link>
-          <Link href="https://www.youtube.com/roadsidecoder" passHref>
-            <Button size="lg" variant="outline" className="px-8 text-base">
-              Watch Demo
-            </Button>
-          </Link>
+          <Button size="lg" variant="outline" className="px-8 text-base">
+            Explore More Below
+          </Button>
         </motion.div>
-
         <motion.div
           className="relative mt-16"
           initial={{ y: 50, opacity: 0 }}
