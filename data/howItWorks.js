@@ -7,10 +7,12 @@ export const howItWorks = [
     icon: <UserPlus className="w-8 h-8 text-primary" />,
   },
   {
-    title: "Craft Your Documents",
-    description: "Create ATS-optimized resumes and compelling cover letters",
+    title: "Skill Development Plans",
+    description:
+      "Build customized learning paths to strengthen technical and soft skills.",
     icon: <FileEdit className="w-8 h-8 text-primary" />,
   },
+
   {
     title: "Prepare for Interviews",
     description:

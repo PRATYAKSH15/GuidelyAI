@@ -17,7 +17,7 @@ export const testimonial = [
   },
   {
     quote:
-      "My resume's ATS score improved significantly. Got more interviews in two weeks than in six months!",
+      "The personalized guidance helped me identify the right skills to focus on. Within weeks, I felt more confident and prepared for new opportunities.",
     author: "Priya Patel",
     image: "https://randomuser.me/api/portraits/women/74.jpg",
     role: "Marketing Director",
