@@ -1,86 +1,129 @@
-import Link from "next/link";
-import Image from "next/image";
-import { auth } from "@clerk/nextjs/server";
-import { UserButton, SignInButton } from "@clerk/nextjs";
-import { Button } from "./ui/button";
-import { LayoutDashboard, PenBox, GraduationCap, BookOpen, Home } from "lucide-react";
+"use client";
 
-export default async function Header() {
-  const { userId } = auth();
-  const isSignedIn = !!userId;
+import React from "react";
+import { Button } from "./ui/button";
+import {
+  PenBox,
+  LayoutDashboard,
+  GraduationCap,
+} from "lucide-react";
+import Link from "next/link";
+import { SignedIn, SignedOut, SignInButton, useUser, UserButton } from "@clerk/nextjs";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+export default function Header() {
+  const { isSignedIn } = useUser();
+  const router = useRouter();
+
+  // Function to handle protected navigation
+const handleProtectedRoute = (path) => {
+  // Define public routes (accessible without sign-in)
+  const publicRoutes = ["/", "/about"];
+
+  if (publicRoutes.includes(path)) {
+    router.push(path); // ✅ Directly navigate if it's a public page
+    return;
+  }
+
+  // For protected routes, check authentication
+  if (isSignedIn) {
+    router.push(path);
+  } else {
+    router.push("/sign-in"); // Redirect to sign-in if not signed in
+  }
+};
 
   return (
-    <header className="fixed top-0 w-full z-50 backdrop-blur-lg bg-gradient-to-r from-blue-50/70 via-white/60 to-blue-50/70 border-b border-gray-200/50 shadow-md">
+    <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/">
           <Image
-            src="/logo.png"
+            src={"/logo.png"}
             alt="GuidelyAI Logo"
-            width={160}
-            height={50}
-            className="h-10 w-auto object-contain"
+            width={200}
+            height={60}
+            className="h-12 py-1 w-auto object-contain"
           />
         </Link>
 
-        {/* Navigation Links */}
-        <div className="hidden md:flex items-center space-x-6">
-          <Link
-            href="/"
-            className="flex items-center gap-2 hover:text-purple-600 transition-colors text-base font-medium"
+        {/* Main Navigation Buttons */}
+        <div className="flex items-center space-x-4">
+
+          {/* Home */}
+          <Button
+            variant="outline"
+            onClick={() => handleProtectedRoute("/")}
+            className="hidden md:inline-flex items-center gap-2"
           >
-            <Home className="h-5 w-5" />
+            <LayoutDashboard className="h-4 w-4" />
             Home
-          </Link>
+          </Button>
 
-          <Link
-            href="/about"
-            className="flex items-center gap-2 hover:text-purple-600 transition-colors text-base font-medium"
+          {/* About */}
+          <Button
+            variant="outline"
+            onClick={() => handleProtectedRoute("/about")}
+            className="hidden md:inline-flex items-center gap-2"
           >
-            <BookOpen className="h-5 w-5" />
+            <LayoutDashboard className="h-4 w-4" />
             About
-          </Link>
+          </Button>
 
-          <Link href={isSignedIn ? "/dashboard" : "/sign-in"}>
-            <Button variant="ghost" className="flex items-center gap-2 hover:bg-blue-100/50 transition text-base font-medium">
-              <LayoutDashboard className="h-5 w-5" />
-              Industry Insights
-            </Button>
-          </Link>
+          {/* Industry Insights */}
+          <Button
+            variant="outline"
+            onClick={() => handleProtectedRoute("/dashboard")}
+            className="hidden md:inline-flex items-center gap-2"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            Industry Insights
+          </Button>
 
-          <Link href={isSignedIn ? "/ai-cover-letter" : "/sign-in"}>
-            <Button variant="ghost" className="flex items-center gap-2 hover:bg-blue-100/50 transition text-base font-medium">
-              <PenBox className="h-5 w-5" />
-              Cover Letter
-            </Button>
-          </Link>
+          {/* AI Cover Letter */}
+          <Button
+            variant="outline"
+            onClick={() => handleProtectedRoute("/ai-cover-letter")}
+            className="hidden md:inline-flex items-center gap-2"
+          >
+            <PenBox className="h-4 w-4" />
+            Cover Letter
+          </Button>
 
-          <Link href={isSignedIn ? "/interview" : "/sign-in"}>
-            <Button variant="ghost" className="flex items-center gap-2 hover:bg-blue-100/50 transition text-base font-medium">
-              <GraduationCap className="h-5 w-5" />
-              Interview Prep
-            </Button>
-          </Link>
+          {/* Interview Prep */}
+          <Button
+            variant="outline"
+            onClick={() => handleProtectedRoute("/interview")}
+            className="hidden md:inline-flex items-center gap-2"
+          >
+            <GraduationCap className="h-4 w-4" />
+            Interview Prep
+          </Button>
         </div>
 
-        {/* Auth Section */}
-        <div className="flex items-center space-x-3">
-          {!isSignedIn ? (
+        {/* Right-Side Authentication */}
+        <div className="flex items-center space-x-4">
+          {/* If signed out → Show Sign In */}
+          <SignedOut>
             <SignInButton fallbackRedirectUrl="/dashboard">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white transition shadow-sm px-5 py-2 text-sm font-semibold">
-                Sign In
-              </Button>
+              <Button variant="outline">Sign In</Button>
             </SignInButton>
-          ) : (
+          </SignedOut>
+
+          {/* If signed in → Show Profile */}
+          <SignedIn>
             <UserButton
               appearance={{
                 elements: {
-                  avatarBox: "w-10 h-10 border border-gray-300 shadow-sm",
+                  avatarBox: "w-10 h-10",
+                  userButtonPopoverCard: "shadow-xl",
+                  userPreviewMainIdentifier: "font-semibold",
                 },
               }}
               afterSignOutUrl="/"
             />
-          )}
+          </SignedIn>
         </div>
       </nav>
     </header>
