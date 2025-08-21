@@ -21,13 +21,8 @@ This project is powered by a cutting-edge technology stack:
 
 ## Screenshots
 
-Here are a couple of screenshots of GuidelyAI in action:
-
-**Screenshot 1: Main Dashboard**
-![Screenshot 1](./SS1.png)
-
-**Screenshot 2: Career Path Analysis**
-![Screenshot 2](./SS2.png)
+**Dashboard**
+![Dashboard](./SS1.png)
 
 ## Getting Started
 
