@@ -6,13 +6,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
-// Animation variants for Framer Motion
+// Animation variants for container and items
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2, // Animate children one by one
+      staggerChildren: 0.2,
     },
   },
 };
@@ -32,13 +32,14 @@ const itemVariants = {
 const HeroSection = () => {
   return (
     <section className="relative w-full pt-36 md:pt-48 pb-20 overflow-hidden">
-      {/* Animated Grid Background */}
+      {/* Subtle Grid Background */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-      {/* Aurora Effect */}
+
+      {/* Aurora Gradient Effect */}
       <div className="absolute top-0 -z-10 h-full w-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
 
       <motion.div
-        className="container mx-auto px-4 text-center"
+        className="container mx-auto px-6 md:px-16 lg:px-24 text-center"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
@@ -47,9 +48,6 @@ const HeroSection = () => {
           className="text-5xl font-bold md:text-6xl lg:text-7xl xl:text-8xl gradient-title"
           variants={itemVariants}
         >
-          {/* Your AI Career Coach for
-          <br />
-          Professional Success */}
           Transform Your Career with
           <br />
           Your Personal AI Guide
@@ -63,6 +61,7 @@ const HeroSection = () => {
           AI-powered tools for job success.
         </motion.p>
 
+        {/* Buttons */}
         <motion.div
           className="mt-8 flex justify-center gap-4"
           variants={itemVariants}
@@ -76,21 +75,59 @@ const HeroSection = () => {
             Explore More Below
           </Button>
         </motion.div>
+
+        {/* Image + About Section */}
         <motion.div
-          className="relative mt-16"
+          className="relative mt-16 flex flex-col md:flex-row items-center md:items-start gap-10 md:gap-16"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
         >
-          {/* Add a subtle parallax effect if you like, by wrapping with another motion.div and using useScroll */}
-          <Image
-            src="/banner.jpeg"
-            width={1280}
-            height={720}
-            alt="Dashboard Preview"
-            className="mx-auto rounded-xl border shadow-2xl shadow-purple-500/10"
-            priority
-          />
+          {/* Left Side - Image */}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+            animate={{ y: [0, -12, 0] }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="shadow-2xl rounded-xl border-2 border-purple-200/20 max-w-[600px] flex-shrink-0"
+          >
+            <Image
+              src="/banner.jpeg"
+              width={600}
+              height={400}
+              alt="Dashboard Preview"
+              className="rounded-xl shadow-2xl shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-500"
+              priority
+            />
+          </motion.div>
+
+          {/* Right Side - About Content */}
+          <div className="max-w-xl text-left">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Why Choose Guidely AI?
+            </h2>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              Guidely AI is your personal career assistant, designed to help you
+              crack interviews, upgrade your skills, and land your dream job.
+              With AI-powered recommendations, personalized learning paths, and
+              real-time performance tracking, we guide you at every step of your
+              journey.
+            </p>
+            <ul className="mt-5 space-y-2 text-gray-700">
+              <li>🚀 AI-powered interview preparation</li>
+              <li>📈 Personalized career growth plans</li>
+              <li>🎯 Real-time progress tracking</li>
+            </ul>
+            <Link href="/about" passHref>
+              <Button size="lg" className="mt-6 px-8 text-base">
+                Learn More
+              </Button>
+            </Link>
+          </div>
         </motion.div>
       </motion.div>
     </section>
@@ -98,6 +135,9 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
+
+
 
 // "use client";
 
