@@ -69,7 +69,7 @@ export async function updateUser(data) {
         return { updatedUser, industryInsight };
       },
       {
-        timeout: 10000, // Increase transaction timeout from default 5s to 10s
+        timeout: 30000, // Increase transaction timeout from default 5s to 10s
       }
     );
 
