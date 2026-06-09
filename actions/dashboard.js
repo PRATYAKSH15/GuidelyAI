@@ -33,7 +33,11 @@ export const generateAIInsights = async (industry) => {
   const text = response.text();
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
 
-  return JSON.parse(cleanedText);
+  try {
+    return JSON.parse(cleanedText);
+  } catch {
+    throw new Error("Failed to parse AI response as JSON");
+  }
 };
 
 export async function getIndustryInsights() {

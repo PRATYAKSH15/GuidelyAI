@@ -43,7 +43,7 @@ export async function updateUser(data) {
         if (!industryInsight) {
           const insights = await generateAIInsights(data.industry);
 
-          industryInsight = await db.industryInsight.create({
+          industryInsight = await tx.industryInsight.create({
             data: {
               industry: data.industry,
               ...insights, // Spread AI-generated fields into the new record
@@ -76,8 +76,7 @@ export async function updateUser(data) {
     // ✅ 4. Revalidate homepage cache so the updated info is shown immediately
     revalidatePath("/");
 
-    // ❌ Possible bug: `result.user` does not exist (should be `result.updatedUser`)
-    return result.user;
+    return result.updatedUser;
   } catch (error) {
     console.error("Error updating user and industry:", error.message);
     throw new Error("Failed to update profile");
@@ -92,26 +91,14 @@ export async function getUserOnboardingStatus() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  // ✅ 2. Ensure the user exists in the DB
-  const user = await db.user.findUnique({
-    where: { clerkUserId: userId },
-  });
-  if (!user) throw new Error("User not found");
-
   try {
-    // ✅ 3. Check if the user has an industry set (means onboarding is complete)
     const user = await db.user.findUnique({
-      where: {
-        clerkUserId: userId,
-      },
-      select: {
-        industry: true, // Only fetch the `industry` field
-      },
+      where: { clerkUserId: userId },
+      select: { industry: true },
     });
 
-    // ✅ 4. Return a boolean indicating onboarding status
     return {
-      isOnboarded: !!user?.industry, // True if industry exists
+      isOnboarded: !!user?.industry,
     };
   } catch (error) {
     console.error("Error checking onboarding status:", error);
