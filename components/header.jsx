@@ -134,25 +134,36 @@
 
 
 "use client";
-import React from "react";
+
+import Link from "next/link";
+import Image from "next/image";
 import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import {
   PenBox,
   LayoutDashboard,
   GraduationCap,
-  Home,
-  Info,
   Map,
+  FileText,
+  ChevronDown,
+  Briefcase,
 } from "lucide-react";
-import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import Image from "next/image";
+
+const tools = [
+  { href: "/dashboard", icon: LayoutDashboard, label: "Industry Insights" },
+  { href: "/resume", icon: FileText, label: "Resume Builder" },
+  { href: "/ai-cover-letter", icon: PenBox, label: "Cover Letter" },
+  { href: "/interview", icon: GraduationCap, label: "Interview Prep" },
+  { href: "/career-roadmap", icon: Map, label: "Career Roadmap" },
+];
 
 export default function Header() {
-  const handleProtectedRoute = (path) => {
-    window.location.href = path;
-  };
-
   return (
     <header className="fixed top-0 w-full border-b bg-background/80 backdrop-blur-md z-50 supports-[backdrop-filter]:bg-background/60">
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -160,109 +171,59 @@ export default function Header() {
         <Link href="/">
           <Image
             src="/logo.png"
-            alt="Sensai Logo"
+            alt="GuidelyAI Logo"
             width={200}
             height={60}
             className="h-12 py-1 w-auto object-contain"
           />
         </Link>
 
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-2 md:space-x-4">
+        {/* Right side */}
+        <div className="flex items-center gap-3">
           <SignedIn>
-            {/* Dashboard */}
-            <Link href="/dashboard">
-              <Button
-                variant="outline"
-                className="hidden md:inline-flex items-center gap-2"
-              >
-                <LayoutDashboard className="h-4 w-4" />
-                Industry Insights
-              </Button>
-              <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
-                <LayoutDashboard className="h-4 w-4" />
-              </Button>
-            </Link>
-
-            {/* Home */}
-            <Button
-              variant="outline"
-              onClick={() => handleProtectedRoute("/")}
-              className="hidden md:inline-flex items-center gap-2"
-            >
-              <Home className="h-4 w-4" />
-              Home
-            </Button>
-
-            {/* About */}
-            <Button
-              variant="outline"
-              onClick={() => handleProtectedRoute("/about")}
-              className="hidden md:inline-flex items-center gap-2"
-            >
-              <Info className="h-4 w-4" />
-              About
-            </Button>
-
-            {/* Growth Tools (inline) */}
-            <Link href="/ai-cover-letter">
-              <Button variant="outline" className="hidden md:inline-flex items-center gap-2">
-                <PenBox className="h-4 w-4" />
-                Cover Letter
-              </Button>
-            </Link>
-
-            <Link href="/interview">
-              <Button variant="outline" className="hidden md:inline-flex items-center gap-2">
-                <GraduationCap className="h-4 w-4" />
-                Interview Prep
-              </Button>
-            </Link>
-
-            <Link href="/career-roadmap">
-              <Button variant="outline" className="hidden md:inline-flex items-center gap-2">
-                <Map className="h-4 w-4" />
-                Career Roadmap
-              </Button>
-            </Link>
-
-            {/* Mobile compact icons */}
-            <div className="md:hidden flex space-x-1">
-              <Button
-                variant="ghost"
-                className="w-10 h-10 p-0"
-                onClick={() => handleProtectedRoute("/")}
-              >
-                <Home className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-10 h-10 p-0"
-                onClick={() => handleProtectedRoute("/about")}
-              >
-                <Info className="h-4 w-4" />
-              </Button>
-              <Link href="/ai-cover-letter">
-                <Button variant="ghost" className="w-10 h-10 p-0">
-                  <PenBox className="h-4 w-4" />
+            {/* Tools dropdown — desktop */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="hidden md:inline-flex items-center gap-2">
+                  <Briefcase className="h-4 w-4" />
+                  Tools
+                  <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
                 </Button>
-              </Link>
-              <Link href="/interview">
-                <Button variant="ghost" className="w-10 h-10 p-0">
-                  <GraduationCap className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                {tools.map(({ href, icon: Icon, label }) => (
+                  <DropdownMenuItem key={href} asChild>
+                    <Link href={href} className="flex items-center gap-2 cursor-pointer">
+                      <Icon className="h-4 w-4 text-muted-foreground" />
+                      {label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Tools dropdown — mobile */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Briefcase className="h-5 w-5" />
                 </Button>
-              </Link>
-              <Link href="/career-roadmap">
-                <Button variant="ghost" className="w-10 h-10 p-0">
-                  <Map className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                {tools.map(({ href, icon: Icon, label }) => (
+                  <DropdownMenuItem key={href} asChild>
+                    <Link href={href} className="flex items-center gap-2 cursor-pointer">
+                      <Icon className="h-4 w-4 text-muted-foreground" />
+                      {label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SignedIn>
 
-          {/* Auth Buttons */}
           <SignedOut>
-            <SignInButton>
+            <SignInButton fallbackRedirectUrl="/dashboard">
               <Button variant="outline">Sign In</Button>
             </SignInButton>
           </SignedOut>
@@ -271,7 +232,7 @@ export default function Header() {
             <UserButton
               appearance={{
                 elements: {
-                  avatarBox: "w-10 h-10",
+                  avatarBox: "w-9 h-9",
                   userButtonPopoverCard: "shadow-xl",
                   userPreviewMainIdentifier: "font-semibold",
                 },
@@ -284,8 +245,6 @@ export default function Header() {
     </header>
   );
 }
-
-
 
 // "use client";
 // import React from "react";
