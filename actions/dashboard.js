@@ -5,7 +5,20 @@ import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+const modelConfig = { generationConfig: { responseMimeType: "application/json" } };
+const primaryModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash", ...modelConfig });
+const fallbackModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash", ...modelConfig });
+
+async function generateContent(prompt) {
+  const is503 = (e) => e?.status === 503 || e?.message?.includes("503");
+  try {
+    return await primaryModel.generateContent(prompt);
+  } catch (error) {
+    if (!is503(error)) throw error;
+  }
+  return await fallbackModel.generateContent(prompt);
+}
 
 export const generateAIInsights = async (industry) => {
   const prompt = `
@@ -28,13 +41,9 @@ export const generateAIInsights = async (industry) => {
           Include at least 5 skills and trends.
         `;
 
-  const result = await model.generateContent(prompt);
-  const response = result.response;
-  const text = response.text();
-  const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-
+  const result = await generateContent(prompt);
   try {
-    return JSON.parse(cleanedText);
+    return JSON.parse(result.response.text());
   } catch {
     throw new Error("Failed to parse AI response as JSON");
   }

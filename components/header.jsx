@@ -142,6 +142,7 @@ import {
   GraduationCap,
   Home,
   Info,
+  Map,
 } from "lucide-react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
@@ -205,16 +206,23 @@ export default function Header() {
 
             {/* Growth Tools (inline) */}
             <Link href="/ai-cover-letter">
-              <Button variant="outline" className="flex items-center gap-2">
+              <Button variant="outline" className="hidden md:inline-flex items-center gap-2">
                 <PenBox className="h-4 w-4" />
                 Cover Letter
               </Button>
             </Link>
 
             <Link href="/interview">
-              <Button variant="outline" className="flex items-center gap-2">
+              <Button variant="outline" className="hidden md:inline-flex items-center gap-2">
                 <GraduationCap className="h-4 w-4" />
                 Interview Prep
+              </Button>
+            </Link>
+
+            <Link href="/career-roadmap">
+              <Button variant="outline" className="hidden md:inline-flex items-center gap-2">
+                <Map className="h-4 w-4" />
+                Career Roadmap
               </Button>
             </Link>
 
@@ -242,6 +250,11 @@ export default function Header() {
               <Link href="/interview">
                 <Button variant="ghost" className="w-10 h-10 p-0">
                   <GraduationCap className="h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="/career-roadmap">
+                <Button variant="ghost" className="w-10 h-10 p-0">
+                  <Map className="h-4 w-4" />
                 </Button>
               </Link>
             </div>

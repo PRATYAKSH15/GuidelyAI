@@ -1,4 +1,4 @@
-"use server"; // Marks this file for server-only execution in Next.js App Router
+"use server";
 
 // Import the Prisma DB instance
 import { db } from "@/lib/prisma";
@@ -86,6 +86,23 @@ export async function updateUser(data) {
 /**
  * Checks if a user has completed onboarding (i.e., set their industry).
  */
+export async function getUserProfile() {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  return db.user.findUnique({
+    where: { clerkUserId: userId },
+    select: {
+      id: true,
+      name: true,
+      industry: true,
+      skills: true,
+      experience: true,
+      bio: true,
+    },
+  });
+}
+
 export async function getUserOnboardingStatus() {
   // ✅ 1. Authenticate the user
   const { userId } = await auth();
