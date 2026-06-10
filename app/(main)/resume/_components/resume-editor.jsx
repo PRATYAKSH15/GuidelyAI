@@ -3,6 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { saveResume } from "@/actions/resume";
 import useFetch from "@/hooks/use-fetch";
 import { toast } from "sonner";
@@ -69,7 +70,6 @@ export default function ResumeEditor({ existing }) {
       toast.error("Switch to Live or Preview mode first, then download.");
       return;
     }
-
     const printWindow = window.open("", "_blank");
     printWindow.document.write(`<!DOCTYPE html>
 <html>
@@ -133,17 +133,19 @@ export default function ResumeEditor({ existing }) {
 
   return (
     <div className="space-y-4">
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      {/* Action bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 py-3 border-y border-border">
         <p className="text-sm text-muted-foreground">
-          Write your resume in Markdown. Click <strong>Save & Score</strong> to get your ATS analysis.
+          Edit in Markdown · Click{" "}
+          <span className="font-medium text-foreground">Save & Score</span> for
+          your ATS analysis
         </p>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={handleDownloadPDF} className="gap-2">
+          <Button variant="outline" size="sm" onClick={handleDownloadPDF} className="gap-2">
             <Download className="h-4 w-4" />
             Download PDF
           </Button>
-          <Button onClick={handleSave} disabled={loading} className="gap-2">
+          <Button size="sm" onClick={handleSave} disabled={loading} className="gap-2">
             {loading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -161,27 +163,36 @@ export default function ResumeEditor({ existing }) {
 
       {loading && <BarLoader width="100%" color="gray" />}
 
-      {/* Editor + Score panel */}
+      {/* Editor + ATS panel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        {/* Editor — takes 2/3 */}
-        <div className="lg:col-span-2" data-color-mode="light">
+        {/* Editor — 2/3 width */}
+        <div className="lg:col-span-2 rounded-lg border border-border overflow-hidden" data-color-mode="light">
           <MDEditor
             value={content}
             onChange={(val) => setContent(val ?? "")}
-            height={700}
+            height={680}
             preview="live"
           />
         </div>
 
-        {/* ATS panel — takes 1/3 */}
+        {/* ATS Score panel — 1/3 width */}
         <div className="lg:col-span-1">
           {saved?.feedback ? (
             <AtsScore resume={saved} />
           ) : (
-            <div className="border border-dashed rounded-xl p-8 text-center text-muted-foreground text-sm space-y-2">
-              <Save className="h-8 w-8 mx-auto opacity-30" />
-              <p>Save your resume to see your ATS score and improvement tips.</p>
-            </div>
+            <Card className="border-dashed border-border">
+              <CardContent className="pt-10 pb-10 flex flex-col items-center text-center gap-3">
+                <div className="p-3 rounded-full bg-muted">
+                  <Save className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">No score yet</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Save your resume to see your ATS score and improvement tips.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           )}
         </div>
       </div>

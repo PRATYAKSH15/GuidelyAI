@@ -9,13 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
@@ -24,51 +18,50 @@ export default function PerformanceChart({ assessments }) {
 
   useEffect(() => {
     if (assessments) {
-      const formattedData = assessments.map((assessment) => ({
-        date: format(new Date(assessment.createdAt), "MMM dd"),
-        score: assessment.quizScore,
-      }));
-      setChartData(formattedData);
+      setChartData(
+        assessments.map((a) => ({
+          date: format(new Date(a.createdAt), "MMM d"),
+          score: a.quizScore,
+        }))
+      );
     }
   }, [assessments]);
 
   return (
-    <Card>
+    <Card className="border-border">
       <CardHeader>
-        <CardTitle className="gradient-title text-3xl md:text-4xl">
-          Performance Trend
-        </CardTitle>
+        <CardTitle>Performance Trend</CardTitle>
         <CardDescription>Your quiz scores over time</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px]">
+        <div className="h-[280px]">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis domain={[0, 100]} />
+            <LineChart data={chartData} margin={{ top: 4, right: 4, bottom: 4, left: 4 }}>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+              <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+              <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
               <Tooltip
-                content={({ active, payload }) => {
-                  if (active && payload?.length) {
-                    return (
-                      <div className="bg-background border rounded-lg p-2 shadow-md">
-                        <p className="text-sm font-medium">
-                          Score: {payload[0].value}%
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {payload[0].payload.date}
-                        </p>
-                      </div>
-                    );
-                  }
-                  return null;
-                }}
+                content={({ active, payload }) =>
+                  active && payload?.length ? (
+                    <div className="bg-background border border-border rounded-lg px-3 py-2 shadow-md text-sm">
+                      <p className="font-medium">{payload[0].payload.date}</p>
+                      <p className="text-muted-foreground">
+                        Score:{" "}
+                        <span className="text-foreground font-semibold">
+                          {payload[0].value}%
+                        </span>
+                      </p>
+                    </div>
+                  ) : null
+                }
               />
               <Line
                 type="monotone"
                 dataKey="score"
-                stroke="#2563eb"
+                stroke="hsl(var(--primary))"
                 strokeWidth={2}
+                dot={{ r: 4, fill: "hsl(var(--primary))" }}
+                activeDot={{ r: 5 }}
               />
             </LineChart>
           </ResponsiveContainer>
