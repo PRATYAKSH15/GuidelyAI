@@ -123,7 +123,7 @@ export default function Home() {
               <Card key={i} className="border border-border bg-card hover:shadow-md transition-all duration-300">
                 <CardContent className="pt-6 pb-6 px-6 flex flex-col gap-5">
                   <blockquote className="text-sm text-muted-foreground leading-relaxed italic">
-                    "{t.quote}"
+                    &ldquo;{t.quote}&rdquo;
                   </blockquote>
                   <div className="flex items-center gap-3 mt-auto pt-4 border-t border-border">
                     <Image
